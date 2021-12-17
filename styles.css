@@ -1,0 +1,87 @@
+html {
+    background-size: cover;
+}
+
+body,html {
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+    height: 100%;
+    background-color: #f2fafd;
+}
+
+.content-box {
+    padding: 20px;
+    width: 45%;
+    min-width: 650px;
+    height: 500px;
+    background: #fff;
+    box-shadow: 0 1px 5px 0 rgb(0 0 0 / 20%), 0 2px 2px 0 rgb(0 0 0 / 14%), 0 3px 1px -2px rgb(0 0 0 / 12%);
+    border-radius: 6px;
+    position: absolute;
+    left: 50%;
+    top: 40%;
+    -webkit-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+}
+
+.navbar {
+    margin: 0; 
+    padding: 0; 
+    justify-content: unset;
+}
+
+h2 {
+    margin-right: 10px
+}
+
+.radio-selector {
+    margin-top: 15px; 
+    margin-bottom: 15px; 
+    margin-left: auto;
+}
+
+.form-control {
+    margin-top: 8px
+}
+
+.table-grid {
+    height: 300px; 
+    overflow: auto; 
+    padding: 0; 
+    margin: 0;
+}
+
+.btn-primary {
+    color:#fff;
+    background-color:#8bacb8;
+    border-color:#8bacb8;
+    cursor: pointer;
+}
+
+.btn-primary:hover {
+    color:#fff;
+    background-color:#007daa;
+    border-color:#007daa;
+}
+
+.btn-primary:not(:disabled):not(.disabled):active,.btn-primary:not(:disabled):not(.disabled).active,.show>.btn-primary.dropdown-toggle {
+    color:#fff;
+    background-color:#007daa;
+    border-color:#007daa;
+}
+
+input[type="file"] {
+    display: none;
+}
+
+.custom-upload {
+    background-color: #b23461; 
+    border-color: #b23461;
+    cursor: pointer;
+}
+
+.custom-upload:hover {
+    background-color: #007daa; 
+    border-color: #007daa;
+}

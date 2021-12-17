@@ -1,0 +1,182 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <div class="container content-box">
+        <div class="container">
+            <nav class="navbar">
+                <h2>Filter Challenge</h2>
+                <label for="inputFile" class="btn btn-secondary btn-sm rounded-pill custom-upload">
+                    <i class="bi-upload"></i>
+                </label>
+                <input id="inputFile" type="file"/>
+                <div id="selector" class="radio-selector">
+                    <button id="firstNameButton" type="button" class="btn btn-primary btn-sm rounded-pill"> First Name</button>
+                    <button id="lastNameButton" type="button" class="btn btn-primary btn-sm rounded-pill"> Last Name</button>
+                    <button id="dobButton" type="button" class="btn btn-primary btn-sm rounded-pill"> Date of Birth</button>
+                </div>
+            </nav>
+            <input class="form-control" id="inputFilter" type="text" placeholder="Filter..">
+            <br>
+            <div class="container table-grid">
+                <table class="table table-bordered table-striped">
+                <thead>
+                    <tr>
+                    <th>First Name</th>
+                    <th>Last Name</th>
+                    <th>Date of Birth</th>
+                    </tr>
+                </thead>
+                <tbody id="gridTable">
+                    <!-- Default sample data -->
+                    <tr>
+                    <td>John</td>
+                    <td>Doe</td>
+                    <td>19720622</td>
+                    </tr>
+                    <tr>
+                    <td>Mary</td>
+                    <td>Joseph</td>
+                    <td>20011019</td>
+                    </tr>
+                    <tr>
+                    <td>Rowan</td>
+                    <td>Tessler</td>
+                    <td>19940217</td>
+                    </tr>
+                    <tr>
+                    <td>Carter</td>
+                    <td>Dale</td>
+                    <td>20010103</td>
+                    </tr>
+                </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        let filterText = '';
+        let columnIndex = -1;
+
+        // Apply filter on input change
+        $(document).ready(function()
+        {
+            $('#inputFilter').on('keyup', function() 
+            {
+                filterText = $(this).val().toLowerCase();
+
+                applyFilter();
+            });
+        });
+
+        // Switch selected filter-column when a filter-button is clicked
+        $('#selector button').click(function() 
+        {
+            if ($(this).hasClass('active')) // If already selected, unselect
+            {
+                $(this).removeClass('active');
+                columnIndex = -1;
+            } 
+            else // Switch selected filter-column
+            {
+                $(this).addClass('active').siblings().removeClass('active');
+
+                switch (this.id) 
+                {
+                case 'firstNameButton':
+                    columnIndex = 0;
+                    break;
+                case 'lastNameButton':
+                    columnIndex = 1;
+                    break;
+                case 'dobButton':
+                    columnIndex = 2;
+                    break;
+                default:
+                    columnIndex = -1;
+                }
+            }
+
+            applyFilter(); // Reapply filter on switch 
+        });
+
+        // On file upload, parse file and populate the table
+        document.getElementById('inputFile').addEventListener('change', function() 
+        {
+            const extension = this.files[0].name.split('.').pop().toLowerCase();
+
+            if (extension !== 'csv')
+            {
+                alert('Please use a csv file.');
+                return;
+            }
+
+            Papa.parse(this.files[0], 
+            {
+                complete: function(results) 
+                {
+                    populateTable(results.data);
+                }
+            });
+        });
+
+        function applyFilter()
+        {
+            if (filterText != null) 
+            {
+                if (columnIndex === -1) // If the selected column is unset, fiilter the entire row
+                {
+                    $('#gridTable tr').filter(function() 
+                    {
+                        $(this).toggle($(this).text().toLowerCase().indexOf(filterText) > -1);
+                    });
+                } 
+                else // Filter by selected column
+                {
+                    $('#gridTable tr').filter(function()
+                    {     
+                        $(this).toggle($(this).find(`td:eq(${columnIndex})`).text().toLowerCase().indexOf(filterText) > -1);
+                    });
+                }
+            }
+        }
+        
+        function populateTable(data)
+        {
+            clearTable(); // Reset table before populating
+
+            const table = document.getElementById('gridTable');
+
+            for (let i = 1; i < data.length; i++) // Skip the header row in the CSV file
+            {
+                const object = data[i];
+                const tr = document.createElement('tr');
+
+                tr.innerHTML = `<td>${object[0]}</td>`
+                             + `<td>${object[1]}</td>`
+                             + `<td>${object[2]}</td>`;
+
+                table.appendChild(tr);
+            }
+        }
+
+        function clearTable()
+        {
+            $('#gridTable tr').remove();
+
+            // Reset text filter
+            document.getElementById('inputFilter').value = '';
+            filterText = '';
+        }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script src="https://www.papaparse.com/resources/js/papaparse.js"></script>
+</body>
+</html>
