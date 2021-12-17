@@ -1,5 +1,21 @@
-# csv-filter-challenge-public
-# Instructions
+# csv-filter-challenge
+
+# How-To
+1. Click "Code" -> "Download ZIP".
+1. Extract files locally.  
+1. Open "scoirchallenge.html" in the browser.
+1. Use the the default data or upload a CSV file
+1. It should look like this: 
+
+![alt text](https://github.com/ryrosenthal/csv-filter-challenge/blob/main/screenshot.JPG?raw=true)
+
+## Assumptions
+1. The user should be able to load a CSV file 
+1. The CSV file is valid, and matches the "example" input format
+1. The CSV file includes a header row
+1. Data, such as Date of Birth, follows the given format (data is not validated)
+
+## Instructions
 1. Click "Use this template" to create a copy of this repository in your personal github account.  
 1. Using technology of your choice, complete assignment listed below.
 1. Update the README in your new repo with:
